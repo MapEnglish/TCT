@@ -1,0 +1,16 @@
+{
+  "geocoder": {
+    "autoComplete": false,
+    "autoNavigate": false,
+    "minCharacters": 3,
+    "arcgisGeocoder": {
+      "placeholder": "Find trail, address or place",
+      "sourceCountry": "CAN",
+      "suffix": " Canada"
+    }
+  },
+  "TCT": {
+  	"sharedWidget": "Trail Search"
+  }
+
+}
