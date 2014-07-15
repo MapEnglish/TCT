@@ -332,6 +332,9 @@ define([
         for (var i = 0; i < len; i++) {
           var attributes = results.features[i].attributes;
           var line = "",br = "",label = "",content = "";
+          
+          var imgSrc = this.folderUrl + "images/Hiking.png";
+
           for (var fieldName in attributes) {
             if(!existObjectId && fieldName === objectIdField){
               continue;
@@ -357,7 +360,8 @@ define([
             id: "id_" + i,
             label: label,
             title: title,
-            content: content
+            content: content,
+            image: imgSrc
           });
         }
         this._drawResults(layerIndex, results);
@@ -507,7 +511,7 @@ define([
       },
 
       _addGeocodeResultsToList: function(results){
-        
+        var imgSrc = this.folderUrl + "images/School.png";
         for (var i = 0, len = results.length; i < len; i++) {
           var result = results[i];
 
@@ -530,7 +534,8 @@ define([
             title: result.name,
             content: result.name,
             centerpoint: centerpoint,
-            graphic: result.feature
+            graphic: result.feature,
+            image: imgSrc
           });
 
           //console.log(result);
