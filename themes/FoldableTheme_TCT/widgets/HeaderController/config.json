@@ -1,0 +1,11 @@
+{
+  "groupSetting": [
+    {
+      "label": "AttributeTable",
+      "type": "dropDown"
+    }
+  ],
+  "TCT": {
+  	"sharedWidget": "Popup Details"
+  }
+}
