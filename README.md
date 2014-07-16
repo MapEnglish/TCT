@@ -1,7 +1,7 @@
 TCT
 ===
 
-Explore the Trail App
+Explore the Trail App - **changes to files outside of the widget framework**
 
 MapManager.js line 92:
 
