@@ -16,3 +16,7 @@ jimu.js/dijit/List.js line 62:
     img.width = 24;
     img.height = 24;
     domConstruct.place(img, div);
+init.js:
+
+    line 21 mblThemeFiles: ['base','Carousel','PageIndicator'],
+    line 52 apiUrl + 'js/dojo/dojox/mobile/deviceTheme.js' //added to support picture carousel
