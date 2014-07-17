@@ -1,7 +1,13 @@
 define(['dojo/_base/declare', 'jimu/BaseWidget', "dojo/_base/lang", 
   "dijit/layout/ContentPane","dijit/registry","dijit/layout/BorderContainer",
-  "dojo/dom-style", 'dojo/_base/html', 'jimu/PanelManager', 'jimu/WidgetManager','dojo/_base/array'],
-function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domStyle, html, PanelManager, WidgetManager,array) {
+  "dojo/dom-style", 'dojo/_base/html', 'jimu/PanelManager', 'jimu/WidgetManager','dojo/_base/array', 'jimu/dijit/Popup',
+  "dojox/mobile/Carousel",
+    "dojox/mobile/CarouselItem",
+    "dojox/mobile/SwapView",
+    "dojox/mobile",
+    "dojox/mobile/parser"],
+function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domStyle, html, PanelManager, WidgetManager,array,Popup,
+  Carousel, CarouselItem, SwapView) {
   //To create a widget, you need to derive from BaseWidget.
   return declare([BaseWidget], {
     // DemoWidget code goes here 
@@ -29,6 +35,7 @@ function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domS
       domStyle.set(this.btnSelectNext,"background-image","url(" + this.folderUrl + "images/next.png)");
       html.setStyle(this.multipleFeaturesNode, {display: 'none'});
       html.setStyle(this.btnPhotos, {display: 'none'});
+      html.setStyle(this.btnPhotosPopup, {display: 'none'});
 
       //create a contentpane to hold infoWindow content object
       console.log('startup');
@@ -125,8 +132,12 @@ function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domS
 
     displayPopupContent: function(feature){
       if (feature){
-        html.setStyle(this.btnPhotos, {display: 'inline'});
+        html.setStyle(this.btnPhotos, {display: 'inline-block'});
         domStyle.set(this.messageNode, "display", "none");
+        
+        var fullPosition = registry.byId(this.id + "_panel").getFullPosition();
+        if (fullPosition.width !== "100%")
+          html.setStyle(this.btnPhotosPopup, {display: 'inline-block'});
 
         var content = feature.getContent();
         //console.log(content);
@@ -134,6 +145,7 @@ function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domS
         if (this.map.infoWindow.features.length > 1)
         {
           html.setStyle(this.multipleFeaturesNode, {display: 'block'});
+
           //html.setStyle(this.multipleFeaturesNode, {visibility: 'visible'});
           //domStyle.set(this.featuresSelected, "visibility", "visible");
           //domStyle.set(this.navBar, "visibility", "visible");
@@ -152,6 +164,20 @@ function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domS
 
       }
     },
+    resize: function() {
+        var fullPosition = registry.byId(this.id + "_panel").getFullPosition();
+        if (fullPosition.width === "100%")
+        {
+            //console.log('transparent');
+            html.setStyle(this.btnPhotosPopup, {display: 'none'});
+        }
+        else
+        {
+            //console.log('opaque');
+            html.setStyle(this.btnPhotosPopup, {display: 'inline-block'});
+        }
+
+    },
 
     selectPrevious: function (event){
       //console.log("selectPrevious");
@@ -167,11 +193,55 @@ function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domS
       this.mapIdNode.innerHTML = "";
       html.setStyle(this.multipleFeaturesNode, {display: 'none'});
       html.setStyle(this.btnPhotos, {display: 'none'});
+      html.setStyle(this.btnPhotosPopup, {display: 'none'});
     },
     showPhotos: function(){
       this.showPhotosClicked = true;
       console.log("showPhotos");
       this.panelManager.showPanel(this.sharedWidget);
+    },
+    showPhotosInPopup: function(){
+      //console.log("Popup Photos");
+
+      var feature = this.map.infoWindow.getSelectedFeature();
+      var popup = new Popup({
+              content: '<div id="carousel1"></div>',
+              titleLabel: "Photos"
+      });
+
+      var carouselTitle = feature.attributes[feature._layer.displayField];
+      var view, item;
+        var carousel1 = new Carousel({
+            height:"300px",
+            navButton:true,
+            numVisible:2,
+            title: carouselTitle
+        }, "carousel1");
+
+        // View #1
+        view = new SwapView();
+        carousel1.addChild(view);
+
+        item = new CarouselItem({src:"images/EdmontonOffice.jpg", value:"dish", headerText:"dish"});
+        item.placeAt(view.containerNode);
+
+        item = new CarouselItem({src:"images/CalgaryOffice.jpg", value:"glass", headerText:"glass"});
+        item.placeAt(view.containerNode);
+
+        // View #2
+        view = new SwapView();
+        carousel1.addChild(view);
+
+        item = new CarouselItem({src:"images/LondonOffice.jpg", value:"stone", headerText:"stone"});
+        item.placeAt(view.containerNode);
+
+        item = new CarouselItem({src:"images/OttawaOffice.jpg", value:"shell", headerText:"shell"});
+        item.placeAt(view.containerNode);
+
+        carousel1.startup();
+
+        popup.domNode.appendChild(carousel1.domNode);
+
     }
 
   });
