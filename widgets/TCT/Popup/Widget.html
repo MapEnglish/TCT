@@ -1,11 +1,12 @@
 <div>
 	<div data-dojo-attach-point="messageNode">${nls.label1}.</div>
 	<div data-dojo-attach-point="multipleFeaturesNode">
-		<div class="jimu-oe-row" data-dojo-attach-point="featuresSelected" >${nls.featuresSelected}</div>	
+		<!--<div class="jimu-oe-row" data-dojo-attach-point="featuresSelected" >${nls.featuresSelected}</div>	-->
 			<!--<div class="content">-->
 				<div class="jimu-navbar" data-dojo-attach-point="navBar">
 					<div  class="jimu-icon-btn" data-dojo-attach-point="btnSelectPrevious" style="background-image: url(images/pic1.png);" data-dojo-attach-event="onclick:selectPrevious"></div>
 					<div class="jimu-icon-btn" data-dojo-attach-point="btnSelectNext" style="background-image: url(images/pic2.png);" data-dojo-attach-event="onclick:selectNext"></div>
+					<div class="jimu-oe-row" data-dojo-attach-point="featuresSelected" style="position: absolute; right: 0; top: 15px;" >${nls.featuresSelected}</div>
 					<!--<div class="jimu-icon-btn jimu-state-selected" style="background-image: url(images/pic3.png);"></div>-->
 				</div>
 			<!--</div>-->
@@ -15,5 +16,5 @@
 	<!--<div>${nls.label2}.[${config.configText}]</div>-->
   	<div data-dojo-attach-point="mapIdNode"></div>
   	<div class="jimu-btn" data-dojo-attach-point="btnPhotos" data-dojo-attach-event="onclick:showPhotos">${nls.photos}</div>
- 
+ 	<div class="jimu-btn" data-dojo-attach-point="btnPhotosPopup" data-dojo-attach-event="onclick:showPhotosInCarousel">${nls.photosInPopup}</div>
 </div>

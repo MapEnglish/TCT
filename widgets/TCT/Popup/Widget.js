@@ -200,7 +200,7 @@ function(declare, BaseWidget, lang, ContentPane, registry, BorderContainer, domS
       console.log("showPhotos");
       this.panelManager.showPanel(this.sharedWidget);
     },
-    showPhotosInPopup: function(){
+    showPhotosInCarousel: function(){
       //console.log("Popup Photos");
 
       var feature = this.map.infoWindow.getSelectedFeature();
