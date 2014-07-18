@@ -40,11 +40,13 @@ define([
     'jimu/dijit/Message',
     './PopupTileNodes',
     'jimu/PanelManager',
-    'jimu/WidgetManager'
+    'jimu/WidgetManager',
+    "dojo/_base/kernel",
+
   ],
   function(declare, lang, array, html, topic, aspect, Deferred, query, nld, nlm, on, mouse, domAttr,
     domConstruct, domGeometry, registry, BaseWidget, PoolControllerMixin, tokenUtils, portalUtils,
-    portalUrlUtils, utils, Message, PopupTileNodes, PanelManager, WidgetManager) {
+    portalUrlUtils, utils, Message, PopupTileNodes, PanelManager, WidgetManager, kernel) {
     /* global jimuConfig */
     /* jshint scripturl:true */
     var clazz = declare([BaseWidget, PoolControllerMixin], {
@@ -140,9 +142,17 @@ define([
             if (this.sharedWidget)
             {
               //console.log("HeaderController show panel");
-              if (this.map.infoWindow.getSelectedFeature() !== undefined)
+              var feature = this.map.infoWindow.getSelectedFeature();
+              if (feature !== undefined)
               {
-                this.panelManager.showPanel(this.sharedWidget); 
+                if(feature.infoTemplate === undefined) //user clicked on a feature and we need to show Popup widget
+                {
+                    this.panelManager.showPanel(this.sharedWidget);
+                }
+                else //user clicked on directions widget results section
+                {
+                  console.log(feature.infoTemplate);
+                }
               }
               
             }
@@ -384,6 +394,43 @@ define([
             }
           }, this.dynamicLinksNode);
         }, this);
+
+/*
+        html.create('a', {
+            href: "javascript:showAddThisToolbar()",
+            target: '_blank',
+            innerHTML: "social",
+            'class': "link",
+            style: {
+              lineHeight: this.height + 'px'
+            }
+          }, this.dynamicLinksNode);
+        */
+
+         html.create('img', {
+          'class': 'logo',
+          src: this.folderUrl + 'images/WMF_share.png',
+          style: {
+            width: '30px',
+            height: '30px',
+            marginTop: ((this.height - 30) / 2) + 'px',
+            opacity: 0.8
+          }
+        }, this.addThisNode);
+
+         //register anonymous function to handle AddThis toolbox toggle
+        kernel.global.showAddThisToolbar = function()
+        {
+          if (dojo.style("addthis_sharing_toolbox", "display") === "none")
+          {
+            dojo.style('addthis_sharing_toolbox', "display", "block");
+          }
+          else
+          {
+            dojo.style('addthis_sharing_toolbox', "display", "none");
+          }
+
+        };
       },
 
       _showSwitchableElements: function(showElement) {
